@@ -1,0 +1,78 @@
+var tamanho = 40;
+
+// Posição inicial do personagem (linha, coluna)
+var posX = 1;
+var posY = 1;
+
+var mapa1 = [
+  [1,1,1,1,1,1,1,1,1,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,1,1,1,0,1,1,0,1],
+  [1,0,0,0,1,0,0,1,0,1],
+  [1,1,1,0,1,1,0,1,0,1],
+  [1,0,1,0,0,0,0,0,0,1],
+  [1,0,1,1,1,1,1,1,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,1,1,1,1,1,1,1,1,1]
+];
+
+var mapa2 = [
+  [1,1,1,1,1,1,1,1,1,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,1,1,1,1,1,1,1,1,1]
+];
+
+var map = mapa2
+//var sprite = createSprite(200, 200);
+//sprite.setAnimation("animation_1");
+
+function draw() {
+  background("white");
+  
+  var novaX = posX;
+  var novaY = posY;
+  
+  if (keyDown("up")) novaY--;
+  if (keyDown("down")) novaY++;
+  if (keyDown("left")) novaX--;
+  if (keyDown("right")) novaX++; 
+  
+  // Desenha o mapa
+  for (var i = 0; i < map.length; i++) {
+    for (var j = 0; j < map[i].length; j++) {
+      if (map[i][j] == 1) {
+        fill("red"); // Obstáculo
+      } else {
+        fill("lightgreen"); // Caminho livre
+      }
+      rect(j * tamanho, i * tamanho, tamanho, tamanho);
+    }
+  }
+
+  // Desenha o personagem
+  fill("blue");
+  rect(posX * tamanho, posY * tamanho, tamanho, tamanho);
+  
+  if (map[novaY][novaX] == 0) {
+    posX = novaX;
+    posY = novaY;
+  }
+  
+  if (mouseDown("leftButton")) {
+    var half = tamanho/2
+    novaX = Math.round((World.mouseX-half) / tamanho)
+    novaY = Math.round((World.mouseY-half) / tamanho)
+    if(map[novaY][novaX] == 0) {
+      map[novaY][novaX] = 1;
+    } else {
+      map[novaY][novaX] = 0;
+    }
+  }
+  drawSprites()
+}
